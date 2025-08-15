@@ -1,7 +1,7 @@
 import React from 'react';
 
 function TodoItem({ todo, onToggle, onDelete }) {
-  // format the due date into a readable string///
+///////////  // format the due date into a readable string///
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -9,7 +9,7 @@ function TodoItem({ todo, onToggle, onDelete }) {
   };
 
   return (
-    // mark each todo item in the list///
+    ////// mark each todo item in the list///
     <li className={`todo-item ${todo.completed ? 'completed' : ''}`}>
       
       {/* Checkbox section */}
@@ -20,7 +20,7 @@ function TodoItem({ todo, onToggle, onDelete }) {
         />
       </div>
 
-      {/* Task content section */}
+     
       <div className="todo-content">
         {/* strike-through styling */}
         <span
@@ -32,7 +32,7 @@ function TodoItem({ todo, onToggle, onDelete }) {
           {todo.id}. {todo.text}{todo.completed ? ' - Completed' : ''}  {/* Display task ID and text */}
         </span>
 
-        {/* Due date display */}
+        {/* due date display */}
         <span className="todo-date">Due: {formatDate(todo.dueDate)}</span>
       </div>
 
