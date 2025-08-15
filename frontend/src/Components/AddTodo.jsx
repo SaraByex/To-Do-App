@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+
+
+import React, {useState} from 'react';
 
 function AddTodo({ onAdd }) {
   const [text, setText] = useState('');
-  const [dueDate, setDueDate] = useState(new Date().toISOString().slice(0, 16));
+
+  // default due date = 1 hour from now//
+  const defaultDueDate = new Date(Date.now() + 1 * 60 * 60 * 1000) // 1 hour in ms
+    .toISOString().slice(0, 16); // format for datetime-local input
+
+  const [dueDate, setDueDate] = useState(defaultDueDate);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!text.trim()) return;
+
     onAdd({ text, dueDate });
+
+    // Reset input fields
     setText('');
-    setDueDate(new Date().toISOString().slice(0, 16));
+    setDueDate(defaultDueDate);
   };
 
   return (
@@ -25,7 +35,7 @@ function AddTodo({ onAdd }) {
         type="datetime-local"
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
-        min={new Date().toISOString().slice(0, 16)}
+        min={new Date().toISOString().slice(0, 16)} 
       />
       <button type="submit">Add</button>
     </form>
