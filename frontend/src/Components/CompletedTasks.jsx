@@ -30,6 +30,7 @@ const CompletedTasks = ({ completedTasks, onUncomplete }) => {
             style={{
               backgroundColor: '#ff9800',
               color: 'white',
+              width: 70,
               border: 'none',
               padding: '6px 12px',
               borderRadius: '4px',
