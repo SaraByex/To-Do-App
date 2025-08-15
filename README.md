@@ -14,23 +14,19 @@ Frontend: React
 Backend: Node.js, Express.js, Nodemon, cors, Fetch API
 
 Installation & Setup
-Clone the Repository: git clone https://github.com/your-username/todo-app.git
+Clone the Repository: git clone "https://github.com/SaraByex/To-Do-App.git"
 cd To-Do-App
 
 Backend Setup
 cd backend
 npm install
 node server.js
-
-
-Backend will run on: http://localhost:5000
+Backend will run on: "http://localhost:5000"
 
 Frontend Setup
 cd ../frontend
 npm install
 npm start
-
-
 Frontend will run on: http://localhost:3000
 
 API Endpoints
