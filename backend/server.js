@@ -11,13 +11,13 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Initial todos array//
+// Initial todos array
 let todos = [
   { 
     id: 1, 
     text: 'Make my to do list', 
     completed: false,
-    dueDate: new Date().toISOString().slice(0, 16), // default due date
+    dueDate: new Date().toISOString().slice(0, 16),
   }
 ];
 
@@ -28,58 +28,48 @@ app.get('/api/todos', (req, res) => {
 
 // POST a new todo
 app.post('/api/todos', (req, res) => {
-  // Generate next id using 'item'
   const nextId = todos.length > 0 ? Math.max(...todos.map(item => item.id)) + 1 : 1;
-
   const newTodo = {
-    id: nextId,                          // Id of the new todo
-    text: req.body.text,                 
-    completed: false,                     // new todo is not completed
-    dueDate: req.body.dueDate || new Date().toISOString().slice(0, 16), // due date
+    id: nextId,
+    text: req.body.text,
+    completed: false,
+    dueDate: req.body.dueDate || new Date().toISOString().slice(0, 16),
   };
-
-  todos.push(newTodo);                    // Add new todo to array
-  res.status(201).json(newTodo);          // Send back created todo
+  todos.push(newTodo);
+  res.status(201).json(newTodo);
 });
 
 // PUT update a todo
 app.put('/api/todos/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const todo = todos.find(item => item.id === id);
-  
+
   if (todo) {
     if (req.body.text !== undefined) todo.text = req.body.text;
     if (req.body.dueDate !== undefined) todo.dueDate = req.body.dueDate;
-    if (req.body.completed !== undefined) {
-      todo.completed = req.body.completed;
-      todo.completedAt = req.body.completed ? new Date().toISOString().slice(0, 16) : null;
-    }
+    if (req.body.completed !== undefined) todo.completed = req.body.completed;
     res.json(todo);
   } else {
     res.status(404).json({ message: 'Todo not found' });
   }
 });
 
-// deLETE a todo item and renumber remaining items///
+// DELETE a todo and renumber remaining
 app.delete('/api/todos/:id', (req, res) => {
   const id = parseInt(req.params.id);
   todos = todos.filter(item => item.id !== id);
-
-  // Renumber remaining todos starting from 1
   todos = todos.map((item, index) => ({ ...item, id: index + 1 }));
-
   res.status(204).end();
 });
 
-// POST endpoint to reset todos to default
+// POST to reset todos
 app.post('/api/reset-todos', (req, res) => {
   todos = [
     { 
       id: 1, 
       text: 'Make my to do list', 
       completed: false,
-      dueDate: new Date().toISOString().slice(0, 16), // default due date
-
+      dueDate: new Date().toISOString().slice(0, 16),
     }
   ];
   res.status(200).json({ message: 'Todos reset to default' });
@@ -90,3 +80,4 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
+module.exports = app;

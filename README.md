@@ -36,6 +36,7 @@ API Endpoints
 Usage
 Start backend first:
 nodemon index.js
+
 Start frontend:
 npm start
 Open "http://localhost:3000" in the browser.

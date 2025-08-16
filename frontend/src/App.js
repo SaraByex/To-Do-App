@@ -1,32 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import AddTodo from './components/AddTodo.jsx';
-import TodoList from './components/TodoList.jsx';
+import AddTodo from './Components/AddTodo.jsx';
+import TodoList from './Components/TodoList.jsx';
+import './App.css';
 
 function App() {
   const [todos, setTodos] = useState([]);
 
-  // Fetch tasks from backend on page load
+  // initialize todos
   useEffect(() => {
-    fetch('http://localhost:5000/api/todos')
+    fetch('http://localhost:5000/api/reset-todos', {method: 'POST'})
+      .then(() => fetch('http://localhost:5000/api/todos'))
       .then(res => res.json())
-      .then(data => setTodos(data));
+      .then(data => setTodos(data))
+      .catch(err => console.error('error initializing list:', err));
   }, []);
-
-  // Reset tasks by calling backend reset endpoint///
-  useEffect(() => {
-    fetch('http://localhost:5000/api/reset-todos', { method: 'POST' })
-      .then(() => {
-        // Fetch again after reset///
-        fetch('http://localhost:5000/api/todos')
-          .then(res => res.json())
-          .then(data => setTodos(data));
-      });
-  }, []); // runs once on refresh
 
   const handleAdd = (newTodo) => {
     fetch('http://localhost:5000/api/todos', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(newTodo)
     })
     .then(res => res.json())
@@ -35,21 +27,17 @@ function App() {
 
   const handleDelete = (id) => {
     fetch(`http://localhost:5000/api/todos/${id}`, { method: 'DELETE' })
-      .then(() => {
-        setTodos(prev => prev.filter(todo => todo.id !== id));
-      });
+      .then(() => setTodos(prev => prev.filter(todo => todo.id !== id)));
   };
 
   const handleToggle = (id, completed) => {
     fetch(`http://localhost:5000/api/todos/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ completed })
+      body: JSON.stringify({completed})
     })
     .then(res => res.json())
-    .then(updated => {
-      setTodos(prev => prev.map(todo => todo.id === id ? updated : todo));
-    });
+    .then(updated => setTodos(prev => prev.map(todo => todo.id === id ? updated : todo)));
   };
 
   return (
